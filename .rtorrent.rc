@@ -1,0 +1,108 @@
+scgi_port = 127.0.0.1:5000
+# scgi_port = localhost:5000
+# scgi_port = 192.168.1.248:5000
+
+# bind = 127.0.0.1
+# ip = 127.0.0.1
+port_range = 51412-51450
+port_random = no
+check_hash = no
+# directory = ~/rtorrent.d/downloads
+session = ~/rtorrent.d/session
+# http_proxy = http://127.0.0.1:5061
+# http_proxy = ""
+encoding_list = UTF-8
+encryption = allow_incoming,try_outgoing,enable_retry
+# peer_exchange = no
+# schedule = 
+# schedule_remove =
+# start_tied =
+# stop_untied =
+# close_untied = 
+# remove_untied = 
+# close_low_diskspace = 500Mb
+# load = 
+# load_verbose = 
+# load_start = 
+# load_start_verbose = 
+# import = 
+# try_import = 
+# stop_on_ratio = 
+# on_insert = 
+# on_erase = 
+# on_open = 
+# on_close = 
+# on_start = 
+# on_stop = 
+# on_hash_queued = 
+# on_hash_removed = 
+# on_hash_done = 
+# on_finished = 
+
+
+upload_rate = 100
+# download_rate = 
+# min_peers = 
+# max_peers = 
+# min_peers_seed = 
+# max_peers_seed = 
+# max_uploads = 
+# max_uploads_div = 
+# max_downloads_div = 
+# max_uploads_global = 
+# max_downloads_global = 
+# throttle_up = 
+# throttle_down = 
+# throttle_ip = 
+
+
+
+
+#enable_trackers = yes
+# tracker_dump = ~/rtorrent.d/tracker_dump
+# tracker_nuwant = 
+# use_udp_trackers = yes
+dht = disable
+# dht_port = 
+# dht_add_node = 
+# http_capath = 
+# http_cacert = 
+
+
+
+
+# view_add 
+# view_sort = complete
+# view_sort_new = 
+# view_sort_current = 
+key_layout = qwerty
+
+
+
+# max_file_size = 
+# split_file_size = -1
+# split_suffix = 
+
+
+# create_link =
+# delete_link =
+
+
+
+# hash_read_ahead = 
+# hash_interval = 
+# hash_max_tries = 
+# safe_sync = 
+# max_open_files = 
+# max_open_sockets = 
+# max_open_http = 
+# max_memory_usage =
+# send_buffer_size =
+# receive_buffer_size @= 
+# umask = 0022
+# cwd = 
+# session_on_completion = yes
+# session_lock = yes
+# session_save = yes
+# tos
+# handshake_log = yes

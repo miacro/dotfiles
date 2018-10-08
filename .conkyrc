@@ -1,0 +1,78 @@
+update_interval 3.0        # 更新时间间隔
+double_buffer yes        # 双缓存，解决Conky闪烁问题
+use_xft yes                # 自定义字体
+#xftfont  DejaVu Sans Mono:size=8
+xftfont DejaVu Sans Mono:size=8
+
+maximum_width 300        # Conky最大宽度像素值
+default_color green       # Conky默认颜色
+alignment top_right       # Conky默认位置
+#draw_outline yes        # 绘制文本、图案的轮廓线
+
+background yes
+gap_x 30
+gap_y 50
+own_window yes
+own_window_transparent yes
+own_window_type normal
+#own_window_colour C76114
+own_window_hints undecorated,sticky,skip_taskbar,skip_pager,below
+alignment top_right
+own_window_argb_visual yes
+own_window_argb_value 0
+
+TEXT
+# 系统信息总览
+${color lightblue}${font :bold:size=9}[SYSTEM] $font$color $alignr$time
+Hostname: $alignr $nodename
+Kernel: $alignr $kernel
+Uptime: $alignr $color $uptime
+System load: $alignr $loadavg
+Running Processes: $alignr $running_processes/$processes
+Running Threads: $alignr $running_threads/$threads
+
+# 显示网络使用情况
+${color lightblue}${font :bold:size=9}[NETWORK] $font$color
+#IP address: $alignr${addr enp7s0}
+#Download: $alignr ${downspeed enp7s0}/s
+#Upload: $alignr ${upspeed enp7s0}/s
+Interface $alignc IPAddress $alignc Download $alignr Upload
+enp7s0 $alignc ${addr enp7s0} $alignc ${downspeed enp7s0} $alignr ${upspeed enp7s0} 
+wlp6s0 $alignc ${addr wlp6s0} $alignc ${downspeed wlp6s0} $alignr ${upspeed wlp6s0} 
+ppp0 $alignc ${addr ppp0} $alignc ${downspeed ppp0} $alignr ${upspeed ppp0} 
+
+# 显示当前四核CPU的频率、使用率的数值和示意图
+${color lightblue}${font :bold:size=9}[PROCESSORS] $font$color
+Core 1: ${freq_g 1}GHz (${cpu cpu1}%) ${alignr 120}${cpubar cpu1}
+Core 2: ${freq_g 2}GHz (${cpu cpu2}%) ${alignr 120}${cpubar cpu2}
+Core 3: ${freq_g 3}GHz (${cpu cpu3}%) ${alignr 120}${cpubar cpu3}
+Core 4: ${freq_g 4}GHz (${cpu cpu4}%) ${alignr 120}${cpubar cpu4}
+
+# 列出排名前三的CPU消耗进程
+${font :bold:size=8}Name $alignc PID $alignr CPU $font$color
+${top name 1} $alignc ${top pid 1} $alignr ${top cpu 1}%
+${top name 2} $alignc ${top pid 2} $alignr ${top cpu 2}%
+${top name 3} $alignc ${top pid 3} $alignr ${top cpu 3}%
+#${top name 4} $alignc ${top pid 4} $alignr ${top cpu 4}%
+#${top name 5} $alignc ${top pid 5} $alignr ${top cpu 5}%
+
+# 显示计算机当前内存的使用情况
+${color lightblue}${font :bold:size=9}[MEMORY] $font:$color $mem/$memmax - $memperc%
+${membar}
+
+# 列出排名前三的内存消耗进程
+${font :bold:size=8}Name $alignc PID $alignr RAM $font
+${top_mem name 1} $alignc ${top_mem pid 1} $alignr ${top_mem mem 1}%
+${top_mem name 2} $alignc ${top_mem pid 2} $alignr ${top_mem mem 2}%
+${top_mem name 3} $alignc ${top_mem pid 3} $alignr ${top_mem mem 3}%
+#${top_mem name 4} $alignc ${top_mem pid 4} $alignr ${top_mem mem 4}%
+#${top_mem name 5} $alignc ${top_mem pid 5} $alignr ${top_mem mem 5}%
+
+# 显示磁盘的使用情况，并且显示磁盘使用示意图
+${color lightblue}${font :bold:size=9}[HDD] $font$color
+/ $alignr ${fs_used /} of ${fs_size /} (${fs_used_perc /}%)
+${fs_bar /}
+/home $alignr ${fs_used /home} of ${fs_size /home} (${fs_used_perc /home}%)
+${fs_bar /home}
+swap $alignr $swap of $swapmax ($swapperc%)
+$swapbar

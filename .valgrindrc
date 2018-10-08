@@ -1,0 +1,6 @@
+ --fair-sched=yes
+ --tool=memcheck 
+ --leak-check=full 
+ --show-leak-kinds=all 
+ --keep-stacktraces=alloc-and-free 
+ --log-file=./valgrind.log

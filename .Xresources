@@ -1,0 +1,55 @@
+! The filename is interpreted relative to the directory of the file in which the line occurs
+#include ".Xresources.color"
+
+! Xft settings
+Xft*dpi: 96
+Xft*antialias: true
+Xft*hinting: Full
+
+XTerm.termName: xterm-256color
+
+XTerm*VT100.geometry: 1920x1080
+XTerm*VT100.DynamicColors: true
+XTerm*VT100.Utf8: 2
+XTerm*VT100.EightBitInput: true
+XTerm*VT100.SaveLines: 40960
+XTerm*VT100.scrollKey: true
+XTerm*VT100.scrollTtyOutput: false
+XTerm*VT100.ScrollBar: false
+XTerm*VT100.RightScrollBar: false
+XTerm*VT100.JumpScroll: true
+XTerm*VT100.MultiScroll: true
+XTerm*ToolBar: false
+
+XTerm*VT100.Translations: #override \n\
+  Ctrl Shift <KeyPress>C: \
+    select-end(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
+  <BtnUp>: \
+    select-end(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
+  Ctrl Shift <KeyPress>V: \
+    insert-selection(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
+  <Btn2Down>: \
+    insert-selection(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
+  Shift <Key>Insert: \
+    insert-selection(SELECT, CUT_BUFFER0) \n\
+  <Key>Insert: string() \n\
+  Shift <Key>Up: scroll-back(1, lines) \n\
+  Shift <Key>Down: scroll-forw(1, lines) \n\
+
+
+! XTerm font and locale
+XTerm*VT100.Locale: true
+XTerm*VT100.Utf8Title: true
+! XTerm*fontMenu*fontdefault*Label: Default
+XTerm*SimpleMenu*faceName: Source Code Pro-12:antialias=true
+XTerm*faceName: Source Code Pro-12:antialias=true
+XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=16:antialias=true
+
+! XTerm*eightBitInput: true
+! XTerm*eightBitOutput: true
+XTerm*metaSendsEscape: true
+
+! xterm not send ^H as <Backspace>
+XTerm*backarrowKey: false
+! tells tty ^? as <Backspace>
+XTerm*ttyModes: erase ^?

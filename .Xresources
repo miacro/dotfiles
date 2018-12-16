@@ -41,9 +41,9 @@ XTerm*VT100.Translations: #override \n\
 XTerm*VT100.Locale: true
 XTerm*VT100.Utf8Title: true
 ! XTerm*fontMenu*fontdefault*Label: Default
-XTerm*SimpleMenu*faceName: Source Code Pro-12:antialias=true
-XTerm*faceName: Source Code Pro-12:antialias=true
-XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=16:antialias=true
+XTerm*SimpleMenu*faceName: Source Code Pro-14:antialias=true
+XTerm*faceName: Source Code Pro-14:antialias=true
+XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=18:antialias=true
 
 ! XTerm*eightBitInput: true
 ! XTerm*eightBitOutput: true

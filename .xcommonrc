@@ -18,3 +18,20 @@ volumeicon &
 
 # To resolve the problem that mouse wheel doesn't work with gtk3 applications
 export GDK_CORE_DEVICE_EVENTS=1
+
+
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 
+
+eval "$(dbus-launch --sh-syntax --exit-with-session)"
+
+# exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
+# export KDEWM=awesome
+exec ~/.stumpwm.d/bin/stumpwm
+exec awesome
+# exec enlightenment_start
+# exec gnome-session
+# exec startkde 
+# exec startxfce4
+# exec startlxde
+# exec startfluxbox 
+# exec ck-launch-session dbus-launch --sh-syntax --exit-with-session fvwm

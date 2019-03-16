@@ -22,16 +22,12 @@ XTerm*VT100.MultiScroll: true
 XTerm*ToolBar: false
 
 XTerm*VT100.Translations: #override \n\
-  Ctrl Shift <KeyPress>C: \
-    select-end(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
-  <BtnUp>: \
-    select-end(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
-  Ctrl Shift <KeyPress>V: \
-    insert-selection(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
-  <Btn2Down>: \
-    insert-selection(PRIMARY, SECONDARY, CLIPBOARD, CUT_BUFFER0) \n\
-  Shift <Key>Insert: \
-    insert-selection(SELECT, CUT_BUFFER0) \n\
+  ~Shift~Ctrl<Btn2Up>: insert-selection(PRIMARY, CUT_BUFFER0) \n\
+  ~Shift     <BtnUp> : select-end(PRIMARY, CUT_BUFFER0) \n\
+   Shift~Ctrl<Btn2Up>: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
+   Shift     <BtnUp> : select-end(CLIPBOARD, CUT_BUFFER1) \n\
+  Ctrl Shift <Key>C: copy-selection(CLIPBOARD, CUT_BUFFER1) \n\
+  Ctrl Shift <Key>V: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
   <Key>Insert: string() \n\
   Shift <Key>Up: scroll-back(1, lines) \n\
   Shift <Key>Down: scroll-forw(1, lines) \n\

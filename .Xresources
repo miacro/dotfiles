@@ -50,15 +50,19 @@ XTerm*backarrowKey: false
 ! tells tty ^? as <Backspace>
 XTerm*ttyModes: erase ^?
 
-URxvt.font: xft:Source Code Pro-14:antialias=true, \
+URxvt*font: xft:Source Code Pro-14:antialias=true, \
             xft:Source Han Sans CN:pixelsize=14:antialias=true
-URxvt.scrollBar: false
-URxvt.saveLines: 40960
-URxvt.scrollTtyOutput: false
-URxvt.jumpScroll: true
-URxvt.letterSpace: -1
+URxvt*scrollBar: false
+URxvt*saveLines: 409600
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+URxvt*jumpScroll: true
+URxvt*secondaryScreen: true
+URxvt*secondaryScroll: false
+URxvt*letterSpace: -1
 ! set for emacs meta key
-URxvt.meta8: false
-URxvt.keysym.Shift-Control-V: eval:paste_clipboard
-URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
-URxvt.depth: 32
+URxvt*meta8: false
+URxvt*keysym.Shift-Control-V: eval:paste_clipboard
+URxvt*keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt*depth: 32

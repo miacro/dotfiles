@@ -39,7 +39,7 @@ XTerm*VT100.Utf8Title: true
 ! XTerm*fontMenu*fontdefault*Label: Default
 XTerm*SimpleMenu*faceName: Source Code Pro-14:antialias=true
 XTerm*faceName: Source Code Pro-14:antialias=true
-XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=17:antialias=true
+XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=14:antialias=true
 
 ! XTerm*eightBitInput: true
 ! XTerm*eightBitOutput: true
@@ -49,3 +49,15 @@ XTerm*metaSendsEscape: true
 XTerm*backarrowKey: false
 ! tells tty ^? as <Backspace>
 XTerm*ttyModes: erase ^?
+
+URxvt.font: xft:Source Code Pro-14:antialias=true, \
+            xft:Source Han Sans CN:pixelsize=14:antialias=true
+URxvt.scrollBar: false
+URxvt.saveLines: 40960
+URxvt.scrollTtyOutput: false
+URxvt.jumpScroll: true
+URxvt.letterSpace: -1
+! set for emacs meta key
+URxvt.meta8: false
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard

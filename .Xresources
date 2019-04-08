@@ -50,8 +50,8 @@ XTerm*backarrowKey: false
 ! tells tty ^? as <Backspace>
 XTerm*ttyModes: erase ^?
 
-URxvt*font: xft:Source Code Pro-14:antialias=true, \
-            xft:Source Han Sans CN:pixelsize=14:antialias=true
+URxvt*font: xft:Source Code Pro-13:antialias=true, \
+            xft:Source Han Sans CN:pixelsize=16:antialias=true
 URxvt*scrollBar: false
 URxvt*saveLines: 409600
 URxvt*scrollTtyOutput: false

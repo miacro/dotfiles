@@ -1,3 +1,4 @@
 #!/bin/sh
 # load by debian display manager
 [[ -f ~/.xprofile ]] && source ~/.xprofile
+[[ -f ~/.profile ]] && source ~/.profile

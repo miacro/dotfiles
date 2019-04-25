@@ -16,8 +16,8 @@ volumeicon &
 
 # [[ -f ~/.xmodmaprc ]] && xmodmap ~/.xmodmaprc #disabled by input method
 
-# To resolve the problem that mouse wheel doesn't work with gtk3 applications
-export GDK_CORE_DEVICE_EVENTS=1
+# To resolve the problem that mouse wheel doesn't work with gtk3 applications (gentoo)
+# export GDK_CORE_DEVICE_EVENTS=1
 
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 

@@ -1,6 +1,6 @@
 ################################################# antigen begin
 ## https://github.com/zsh-users/antigen.git
-ADOTDIR=~/.antigen
+ADOTDIR=~/.config/zsh/antigen
 [[ ! -d ${ADOTDIR} ]] && mkdir -p ${ADOTDIR}
 [[ -f ${ADOTDIR}/antigen.zsh ]] || curl -fSL git.io/antigen > ${ADOTDIR}/antigen.zsh
 source ${ADOTDIR}/antigen.zsh

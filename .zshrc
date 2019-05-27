@@ -22,9 +22,15 @@ antigen bundle https://github.com/zsh-users/zsh-completions.git src
 antigen bundle https://github.com/zsh-users/zsh-syntax-highlighting
 antigen bundle https://github.com/voronkovich/gitignore.plugin.zsh.git
 
-# Load the theme.
-antigen theme clean
-antigen theme Soliah
+### background theme:
+# clean, arrow
+antigen theme arrow
+### foreground theme
+# Soliah # too slow in large git repo
+# dst, tjkirch, ys
+# gnzh, jispwoso, steeef, strug, suvash
+# linuxonly, pmcgee
+antigen theme dst
 
 # Tell antigen that you're done.
 antigen apply

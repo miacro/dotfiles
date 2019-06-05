@@ -30,10 +30,11 @@ function __my_setup_conda() {
   fi
 
   pythonprefix=$(dirname ${prefix})/anaconda-python
+  pythoncommands=(python pip pydoc pytest pyvenv black blackd)
   mkdir -p ${pythonprefix}
-  for command in python pydoc pytest pyvenv; do
-    if [[ -x ${pythondir}/${command} ]]; then
-      ln -sfn ${pythondir}/${command} ${pythonprefix}/${command}
+  for item in ${pythoncommands}; do
+    if [[ -x ${pythondir}/${item} ]]; then
+      ln -sfn ${pythondir}/${item} ${pythonprefix}/${item}
     fi
   done
   export PATH=${pythonprefix}:${PATH}

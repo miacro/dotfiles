@@ -16,6 +16,28 @@ function __my_find_bindirs() {
               -type d \
               -printf %p:)
 }
+function __my_setup_conda() {
+  prefix=$(realpath $1)
+  environment=$2
+  if [ -f ${prefix}/etc/profile.d/conda.sh ]; then
+    . ${prefix}/etc/profile.d/conda.sh
+  fi
+
+  if [[ -n ${environment} ]]; then
+    pythondir=${prefix}/envs/${environment}/bin
+  else
+    pythondir=${prefix}/bin
+  fi
+
+  pythonprefix=$(dirname ${prefix})/anaconda-python
+  mkdir -p ${pythonprefix}
+  for command in python pydoc pytest pyvenv; do
+    if [[ -x ${pythondir}/${command} ]]; then
+      ln -sfn ${pythondir}/${command} ${pythonprefix}/${command}
+    fi
+  done
+  export PATH=${pythonprefix}:${PATH}
+}
 
 __my_update_environments /usr/local
 __my_update_environments ~/.local
@@ -23,6 +45,8 @@ __my_update_environments ~/.local/texlive/2018/bin/x86_64-linux
 export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
 export PATH=~/node_modules/.bin:${PATH}
 export PATH=~/bin:~/bin/private:~/bin/utils:${PATH}
+
+__my_setup_conda ~/.local/anaconda3 ""
 
 unset -f __my_update_environments
 unset -f __my_find_bindirs

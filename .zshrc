@@ -36,7 +36,7 @@ antigen theme dst
 antigen apply
 ################################################# antigen end
 
-[[ -f /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+[[ -f ~/.profilerc ]] && source ~/.profilerc
 # fpath=(${COMMON_HOME}/gentoo-zsh-completions/src $fpath)
 
 # autoload -U compinit promptinit && compinit && promptinit

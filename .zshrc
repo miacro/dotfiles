@@ -24,7 +24,7 @@ antigen bundle https://github.com/voronkovich/gitignore.plugin.zsh.git
 
 ### background theme:
 # clean, arrow
-antigen theme arrow
+antigen theme clean
 ### foreground theme
 # Soliah # too slow in large git repo
 # dst, tjkirch, ys

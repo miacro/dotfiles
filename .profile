@@ -32,7 +32,7 @@ function __my_setup_conda() {
   pythonprefix=$(dirname ${prefix})/anaconda-python
   pythoncommands=(python pip pydoc pytest pyvenv black blackd)
   mkdir -p ${pythonprefix}
-  for item in ${pythoncommands}; do
+  for item in ${pythoncommands[@]}; do
     if [[ -x ${pythondir}/${item} ]]; then
       ln -sfn ${pythondir}/${item} ${pythonprefix}/${item}
     fi

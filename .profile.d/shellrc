@@ -1,1 +1,3 @@
+#!/bin/sh
 [[ -f /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+echo "123"

@@ -20,7 +20,7 @@ function __my_find_bindirs() {
 
 __my_update_environments /usr/local
 __my_update_environments ~/.local
-__my_update_environments ~/.local/texlive/2018/bin/x86_64-linux
+[[ -f ~/.profile.d/texlive ]] && source ~/.profile.d/texlive
 export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
 export PATH=~/node_modules/.bin:${PATH}
 export PATH=~/bin:~/bin/private:~/bin/utils:${PATH}

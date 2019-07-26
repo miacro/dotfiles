@@ -1,0 +1,4 @@
+#!/bin/sh
+export PATH=~/.local/texlive/latest/bin/x86_64-linux:${PATH}
+export MANPATH=${MANPATH}:~/.local/texlive/latest/texmf-dist/doc/man
+export INFOPATH=${INFOPATH}:~/.local/texlive/latest/texmf-dist/doc/info

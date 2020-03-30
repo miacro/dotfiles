@@ -36,7 +36,7 @@ antigen theme dst
 antigen apply
 ################################################# antigen end
 
-[[ -f ~/.profile.d/shellrc ]] && source ~/.profile.d/shellrc
+[[ -f ~/.profile ]] && source ~/.profile
 # fpath=(${COMMON_HOME}/gentoo-zsh-completions/src $fpath)
 
 # autoload -U compinit promptinit && compinit && promptinit

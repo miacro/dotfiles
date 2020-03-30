@@ -18,15 +18,19 @@ function __my_find_bindirs() {
               -printf %p:)
 }
 
-__my_update_environments /usr/local
-__my_update_environments ~/.local
-[[ -f ~/.profile.d/texlive ]] && source ~/.profile.d/texlive
-export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
-export PATH=~/node_modules/.bin:${PATH}
-export PATH=~/bin:~/bin/private:~/bin/utils:${PATH}
+if [[ ! -n "${__INITIALIZED_PROFILE__}" ]];
+then
+  __my_update_environments /usr/local
+  __my_update_environments ~/.local
+  [[ -f ~/.profile.d/texlive ]] && source ~/.profile.d/texlive
+  export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
+  export PATH=~/node_modules/.bin:${PATH}
+  export PATH=~/bin:~/bin/private:~/bin/utils:${PATH}
 
-unset -f __my_update_environments
-unset -f __my_find_bindirs
+  unset -f __my_update_environments
+  unset -f __my_find_bindirs
+  __INITIALIZED_PROFILE__=1
+fi
 
 export EDITOR="vim"
 alias grep='grep --color=auto --exclude-dir=node_modules --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'

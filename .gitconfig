@@ -6,6 +6,6 @@
 [color]
 	ui = auto
 [alias]
-	lof = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset by:%cN' --abbrev-commit --date=relative 
+	lof = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset by:%cN' --abbrev-commit --date=relative
 [credential]
 	helper = store

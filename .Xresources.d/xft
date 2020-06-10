@@ -1,0 +1,4 @@
+! Xft settings
+Xft*dpi: 96
+Xft*antialias: true
+Xft*hinting: Full

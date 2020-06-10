@@ -21,6 +21,7 @@ export GDK_CORE_DEVICE_EVENTS=1
 
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 
+[[ -f ~/.Xresources.d/custom ]] && xrdb -merge ~/.Xresources.d/custom
 
 eval "$(dbus-launch --sh-syntax --exit-with-session)"
 

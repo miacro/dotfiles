@@ -1,0 +1,44 @@
+XTerm.termName: xterm-256color
+
+XTerm*VT100.geometry: 1920x1080
+XTerm*VT100.DynamicColors: true
+XTerm*VT100.Utf8: 2
+XTerm*VT100.EightBitInput: true
+XTerm*VT100.SaveLines: 40960
+XTerm*VT100.scrollKey: true
+XTerm*VT100.scrollTtyOutput: false
+XTerm*VT100.ScrollBar: false
+XTerm*VT100.RightScrollBar: false
+XTerm*VT100.JumpScroll: true
+XTerm*VT100.MultiScroll: true
+XTerm*ToolBar: false
+
+XTerm*VT100.Translations: #override \n\
+  ~Shift~Ctrl<Btn2Up>: insert-selection(PRIMARY, CUT_BUFFER0) \n\
+  ~Shift     <BtnUp> : select-end(PRIMARY, CUT_BUFFER0) \n\
+   Shift~Ctrl<Btn2Up>: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
+   Shift     <BtnUp> : select-end(CLIPBOARD, CUT_BUFFER1) \n\
+  Ctrl Shift <Key>C: copy-selection(CLIPBOARD, CUT_BUFFER1) \n\
+  Ctrl Shift <Key>V: insert-selection(CLIPBOARD, CUT_BUFFER1) \n\
+  <Key>Insert: string() \n\
+  Shift <Key>Up: scroll-back(1, lines) \n\
+  Shift <Key>Down: scroll-forw(1, lines) \n\
+
+
+! XTerm font and locale
+XTerm*VT100.Locale: true
+XTerm*VT100.Utf8Title: true
+! XTerm*fontMenu*fontdefault*Label: Default
+XTerm*SimpleMenu*faceName: Source Code Pro-13:antialias=true
+XTerm*faceName: Source Code Pro-14:antialias=true
+! XTerm*faceNameDoublesize: Source Han Sans CN:pixelsize=16:antialias=true
+XTerm*faceNameDoublesize: Noto Sans CJK SC:pixelsize=16:antialias=true
+
+! XTerm*eightBitInput: true
+! XTerm*eightBitOutput: true
+XTerm*metaSendsEscape: true
+
+! xterm not send ^H as <Backspace>
+XTerm*backarrowKey: false
+! tells tty ^? as <Backspace>
+XTerm*ttyModes: erase ^?

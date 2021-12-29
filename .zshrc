@@ -21,6 +21,7 @@ antigen bundle https://github.com/radhermit/gentoo-zsh-completions.git src
 antigen bundle https://github.com/zsh-users/zsh-completions.git src
 antigen bundle https://github.com/zsh-users/zsh-syntax-highlighting
 antigen bundle https://github.com/voronkovich/gitignore.plugin.zsh.git
+antigen bundle https://github.com/scriptingosx/mac-zsh-completions.git
 
 ### background theme:
 # clean, arrow

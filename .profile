@@ -22,7 +22,11 @@ if [[ ! -n "${__INITIALIZED_PROFILE__}" ]];
 then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
+
   [[ -f ~/.profile.d/texlive ]] && source ~/.profile.d/texlive
+  [[ -f ~/.profile.d/homebrew ]] && source ~/.profile.d/homebrew
+  [[ -f ~/.profile.d/darwin ]] && source ~/.profile.d/darwin
+
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}
   export PATH=~/bin:~/bin/private:~/bin/utils:${PATH}

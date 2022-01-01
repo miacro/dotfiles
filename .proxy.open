@@ -1,0 +1,6 @@
+export HTTP_PROXY=http://127.0.0.1:7182
+# export HTTP_PROXY=socks5://127.0.0.1:7152
+export HTTPS_PROXY=${HTTP_PROXY}
+export http_proxy=${HTTP_PROXY}
+export https_proxy=${HTTP_PROXY}
+

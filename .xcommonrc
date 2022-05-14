@@ -11,8 +11,8 @@ export XMODIFIERS="@im=fcitx"
 # LANG="en_US.UTF-8"
 
 # export XDG_CURRENT_DESKTOP=KDE
-fcitx &
-volumeicon &
+(fcitx &)
+(volumeicon &)
 
 # [[ -f ~/.xmodmaprc ]] && xmodmap ~/.xmodmaprc #disabled by input method
 

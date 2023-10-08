@@ -1,25 +1,28 @@
 #!/bin/sh
 
 __HOMEBREW_ROOT="/opt/homebrew"
-# __HOMEBREW_MIRROR=https://mirrors.ustc.edu.cn
-__HOMEBREW_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/git/homebrew
+__HOMEBREW_MIRROR_DOM=https://mirrors.tuna.tsinghua.edu.cn/homebrew
+__HOMEBREW_MIRROR_GIT=https://mirrors.tuna.tsinghua.edu.cn/git/homebrew
+__HOMEBREW_MIRROR_PIP=https://pypi.tuna.tsinghua.edu.cn/simple
 
 
 function __my_brew_tap() {
   repo_name=$1
-  brew tap --custom-remote --force-auto-update homebrew/${repo_name} ${__HOMEBREW_MIRROR}/homebrew-${repo_name}.git
+  brew tap --custom-remote --force-auto-update homebrew/${repo_name} ${__HOMEBREW_MIRROR_GIT}/homebrew-${repo_name}.git
 
 }
 
 if [[ -e "${__HOMEBREW_ROOT}/bin/brew" ]]; then
   eval "$(${__HOMEBREW_ROOT}/bin/brew shellenv)"
-  export HOMEBREW_BREW_GIT_REMOTE="${__HOMEBREW_MIRROR}/brew.git"
-  export HOMEBREW_CORE_GIT_REMOTE="${__HOMEBREW_MIRROR}/homebrew-core.git"
-  # __my_brew_tap "cask"
+  export HOMEBREW_BREW_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/brew.git"
+  export HOMEBREW_CORE_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/homebrew-core.git"
+  export HOMEBREW_API_DOMAIN="${__HOMEBREW_MIRROR_DOM}-bottles/api"
+  export HOMEBREW_BOTTLE_DOMAIN="${__HOMEBREW_MIRROR_DOM}-bottles"
+  export HOMEBREW_PIP_INDEX_URL="${__HOMEBREW_MIRROR_PIP}"
   # __my_brew_tap "cask-fonts"
-  # __my_brew_tap "cask-drivers"
   # __my_brew_tap "cask-versions"
   # __my_brew_tap "command-not-found"
+  # __my_brew_tap "services"
 fi
 unset __HOMEBREW_ROOT
 unset __HOMEBREW_MIRROR

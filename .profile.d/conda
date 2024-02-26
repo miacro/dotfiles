@@ -1,5 +1,8 @@
 #!/bin/sh
 function __my_setup_conda() {
+  if [[ ! -d $1 ]]; then
+    return
+  fi
   prefix=$(realpath $1)
   environment=$2
   argc=$#
@@ -27,5 +30,6 @@ function __my_setup_conda() {
 }
 
 __my_setup_conda ~/.local/anaconda3
+__my_setup_conda /opt/homebrew//anaconda3
 
 unset -f __my_setup_conda

@@ -6,13 +6,13 @@ __HOMEBREW_MIRROR_GIT=https://mirrors.tuna.tsinghua.edu.cn/git/homebrew
 __HOMEBREW_MIRROR_PIP=https://pypi.tuna.tsinghua.edu.cn/simple
 
 
-function __my_brew_tap() {
+__my_brew_tap() {
   repo_name=$1
   brew tap --custom-remote --force-auto-update homebrew/${repo_name} ${__HOMEBREW_MIRROR_GIT}/homebrew-${repo_name}.git
 
 }
 
-if [[ -e "${__HOMEBREW_ROOT}/bin/brew" ]]; then
+if [ -e "${__HOMEBREW_ROOT}/bin/brew" ]; then
   eval "$(${__HOMEBREW_ROOT}/bin/brew shellenv)"
   export HOMEBREW_BREW_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/brew.git"
   export HOMEBREW_CORE_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/homebrew-core.git"

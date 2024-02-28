@@ -1,5 +1,5 @@
 #!/bin/sh
-function __my_update_environments() {
+__my_update_environments() {
   prefix=$1
   export LIBRARY_PATH=${prefix}/lib:${prefix}/lib64:${LIBRARY_PATH}
   export LD_LIBRARY_PATH=${prefix}/lib:${prefix}/lib64:${LD_LIBRARY_PATH}
@@ -10,7 +10,7 @@ function __my_update_environments() {
   export INFOPATH=${prefix}/share/info:${INFOPATH}
 }
 
-function __my_find_bindirs() {
+__my_find_bindirs() {
   prefix=$1
   echo $(find -L ${prefix} \
               -regex "$(realpath ${prefix}).*/bin" \
@@ -18,14 +18,13 @@ function __my_find_bindirs() {
               -printf %p:)
 }
 
-if [[ ! -n "${__INITIALIZED_PROFILE__}" ]];
-then
+if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
 
-  [[ -f ~/.profile.d/texlive ]] && source ~/.profile.d/texlive
-  [[ -f ~/.profile.d/homebrew ]] && source ~/.profile.d/homebrew
-  [[ -f ~/.profile.d/darwin ]] && source ~/.profile.d/darwin
+  [ -f ~/.profile.d/texlive ] && . ~/.profile.d/texlive
+  [ -f ~/.profile.d/homebrew ] && . ~/.profile.d/homebrew
+  [ -f ~/.profile.d/darwin ] && . ~/.profile.d/darwin
 
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}
@@ -38,4 +37,4 @@ fi
 
 export EDITOR="vim"
 alias grep='grep --color=auto --exclude-dir=node_modules --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
-[[ -f /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+[ -f /etc/profile.d/autojump.sh ] && source /etc/profile.d/autojump.sh

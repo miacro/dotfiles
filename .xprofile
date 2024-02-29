@@ -1,1 +1,1 @@
-[[ -f ~/.xcommonrc ]] && source ~/.xcommonrc
+[ -f ~/.xcommonrc ] && . ~/.xcommonrc

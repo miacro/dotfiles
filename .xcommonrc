@@ -11,8 +11,8 @@ export XMODIFIERS="@im=fcitx"
 # LANG="en_US.UTF-8"
 
 # export XDG_CURRENT_DESKTOP=KDE
-(fcitx &)
-(volumeicon &)
+which fcitx && (fcitx &)
+which volumeicon && (volumeicon &)
 
 # [[ -f ~/.xmodmaprc ]] && xmodmap ~/.xmodmaprc #disabled by input method
 
@@ -20,15 +20,15 @@ export XMODIFIERS="@im=fcitx"
 export GDK_CORE_DEVICE_EVENTS=1
 
 
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 
-[[ -f ~/.Xresources.d/custom ]] && xrdb -merge ~/.Xresources.d/custom
+[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
+[ -f ~/.Xresources.d/custom ] && xrdb -merge ~/.Xresources.d/custom
 
 eval "$(dbus-launch --sh-syntax --exit-with-session)"
 
 # exec ck-launch-session dbus-launch --sh-syntax --exit-with-session awesome
 # export KDEWM=awesome
-exec ~/.stumpwm.d/bin/stumpwm
-exec awesome
+# exec ~/.stumpwm.d/bin/stumpwm
+# exec awesome
 # exec enlightenment_start
 # exec gnome-session
 # exec startkde 

@@ -25,6 +25,7 @@ if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
   [ -f ~/.profile.d/texlive ] && . ~/.profile.d/texlive
   [ -f ~/.profile.d/homebrew ] && . ~/.profile.d/homebrew
   [ -f ~/.profile.d/darwin ] && . ~/.profile.d/darwin
+  [ -f ~/.profile.d/rust ] && . ~/.profile.d/rust
 
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}

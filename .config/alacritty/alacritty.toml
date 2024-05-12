@@ -7,3 +7,9 @@ import = [
 normal= { family = "Cascadia Code", style = "Regular" }
 # normal = { family = "Source Code Pro", style = "SemiBold" }
 size = 13
+
+[window]
+opacity = 0.88
+
+[scrolling]
+history = 100000

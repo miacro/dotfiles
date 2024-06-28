@@ -1,1 +1,1 @@
-[ -f ~/.xcommonrc ] && . ~/.xcommonrc
+[ -f ~/.xprofile.d/xcommonrc ] && . ~/.xprofile.d/xcommonrc

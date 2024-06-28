@@ -14,7 +14,7 @@ export XMODIFIERS="@im=fcitx"
 # which fcitx && (fcitx &)
 # which volumeicon && (volumeicon &)
 
-# [[ -f ~/.xmodmaprc ]] && xmodmap ~/.xmodmaprc #disabled by input method
+# [[ -f ~/.xprofile.d/xmodmaprc ]] && xmodmap ~/.xprofile.d/xmodmaprc #disabled by input method
 
 # To resolve the problem that mouse wheel doesn't work with gtk3 applications (gentoo)
 export GDK_CORE_DEVICE_EVENTS=1

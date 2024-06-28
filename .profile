@@ -27,6 +27,7 @@ if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
   [ -f ~/.profile.d/darwin ] && . ~/.profile.d/darwin
   [ -f ~/.profile.d/rust ] && . ~/.profile.d/rust
   [ -f ~/.profile.d/pyenv ] && . ~/.profile.d/pyenv
+  [ -f ~/.profile.d/custom ] && . ~/.profile.d/custom
 
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}

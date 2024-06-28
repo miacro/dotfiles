@@ -1,1 +1,1 @@
-which xrandr && xrandr --output DVI-D-0 --mode 1920x1200 --scale 1.5x1.5 
+which xrandr && xrandr --output DVI-D-0 --mode 1920x1200 --scale 1.4999

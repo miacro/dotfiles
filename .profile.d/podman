@@ -1,0 +1,1 @@
+export DOCKER_HOST='unix:///var/folders/qh/5xmsvn_169s_w3zdvtcp2vzc0000gn/T/podman/podman-machine-default-api.sock'

@@ -1,6 +1,6 @@
 ! The filename is interpreted relative to the directory of the file in which the line occurs
 #include ".Xresources.d/xft"
-#include ".Xresources.d/solarized.dark"
 #include ".Xresources.d/urxvt"
-#include ".Xresources.d/solarized.dark.xterm"
 #include ".Xresources.d/xterm"
+#include ".Xresources.d/solarized.light"
+#include ".Xresources.d/solarized.light.xterm"

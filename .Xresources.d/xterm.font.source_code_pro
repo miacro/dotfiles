@@ -1,0 +1,9 @@
+XTerm*SimpleMenu*faceName: Source Code Pro:antialias=true:size=13
+XTerm*faceName: Source Code Pro:antialias=true:size=13
+! XTerm*faceNameDoublesize: Source Han Sans CN:size=16:antialias=true
+XTerm*faceNameDoublesize: Noto Sans CJK SC:size=16:antialias=true
+
+
+URxvt*font: xft:Source Code Pro:antialias=true:size=13, \
+            xft:Noto Sans CJK SC:size=16:antialias=true
+

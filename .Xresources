@@ -4,3 +4,5 @@
 #include ".Xresources.d/xterm"
 #include ".Xresources.d/solarized.light"
 #include ".Xresources.d/solarized.light.xterm"
+#include ".Xresources.d/xterm.font.cascadia_code"
+! #include ".Xresources.d/xterm.font.source_code_pro"

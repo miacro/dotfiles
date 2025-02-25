@@ -1,7 +1,3 @@
-! URxvt*font: xft:Source Code Pro-13:antialias=true, \
-!             xft:Source Han Sans CN:pixelsize=16:antialias=true
-URxvt*font: xft:Source Code Pro-13:antialias=true, \
-            xft:Noto Sans CJK SC:pixelsize=16:antialias=true
 URxvt*scrollBar: false
 URxvt*saveLines: 409600
 URxvt*scrollTtyOutput: false

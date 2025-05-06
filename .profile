@@ -22,13 +22,7 @@ if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
 
-  [ -f ~/.profile.d/texlive ] && . ~/.profile.d/texlive
-  [ -f ~/.profile.d/homebrew ] && . ~/.profile.d/homebrew
-  [ -f ~/.profile.d/darwin ] && . ~/.profile.d/darwin
-  [ -f ~/.profile.d/rust ] && . ~/.profile.d/rust
-  [ -f ~/.profile.d/pyenv ] && . ~/.profile.d/pyenv
-  [ -f ~/.profile.d/kitty ] && . ~/.profile.d/kitty
-  [ -f ~/.profile.d/custom ] && . ~/.profile.d/custom
+  [ -f ~/.profile.d/all-init ] && . ~/.profile.d/all-init
 
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}

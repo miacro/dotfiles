@@ -18,7 +18,15 @@ __my_find_bindirs() {
               -printf %p:)
 }
 
-if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
+init_dir=~/.cache/myself/
+init_file=${init_dir}/my-profile.init.pid
+init_pid=""
+if [ -f "${init_file}" ]; then
+  init_pid=$(cat "${init_file}") 2>/dev/null
+fi
+init_done=$(ps -p "${init_pid}" 1>>/dev/null 2>&1 && echo "" || echo "1")
+
+if [ -n "${init_done}" ]; then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
 
@@ -30,9 +38,14 @@ if [ ! -n "${__INITIALIZED_PROFILE__}" ]; then
 
   unset -f __my_update_environments
   unset -f __my_find_bindirs
-  __INITIALIZED_PROFILE__=1
+
+  [ -d "${init_dir}" ] || mkdir -p "${init_dir}"
+  echo $$ > "${init_file}"
 fi
 
 export EDITOR="vim"
 alias grep='grep --color=auto --exclude-dir=node_modules --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
-[ -f /etc/profile.d/autojump.sh ] && source /etc/profile.d/autojump.sh
+
+if [ -f /etc/profile.d/autojump.sh ]; then
+  source /etc/profile.d/autojump.sh
+fi

@@ -26,7 +26,7 @@ if [ -f "${init_file}" ]; then
 fi
 init_done=$(ps -p "${init_pid}" 1>>/dev/null 2>&1 && echo "" || echo "1")
 
-if [ -n "${init_done}" ]; then
+if [ ! -n "${MYSELF_INIT_PROFILE}" ]; then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
 
@@ -39,8 +39,9 @@ if [ -n "${init_done}" ]; then
   unset -f __my_update_environments
   unset -f __my_find_bindirs
 
-  [ -d "${init_dir}" ] || mkdir -p "${init_dir}"
-  echo $$ > "${init_file}"
+  # [ -d "${init_dir}" ] || mkdir -p "${init_dir}"
+  # echo $$ > "${init_file}"
+  export MYSELF_INIT_PROFILE="1"
 fi
 
 export EDITOR="vim"

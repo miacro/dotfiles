@@ -1,15 +1,19 @@
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
+# export LANG=zh_CN.UTF-8
+# LANG="en_US.UTF-8"
+#
 export XMODIFIERS="@im=fcitx"
+
+if [ "${XDG_SESSION_TYPE}" != "wayland" ]; then
+  export GTK_IM_MODULE=fcitx
+  export SDL_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
+fi
 # export GTK_IM_MODULE=ibus
 # export XMODIFIERS=@im=ibus
 # export QT_IM_MODULE=ibus
-# ibus-daemon -d -x
-# export LANG=zh_CN.UTF-8
-# LANG="en_US.UTF-8"
 
 # if [ -x "$(command -v fcitx5)" ]; then
-#     fcitx5 -d
+#   fcitx5 -d
 # elif [ -x "$(command -v fcitx)" ]; then
-#     fcitx -d
+#   fcitx -d
 # fi

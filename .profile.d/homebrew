@@ -23,7 +23,12 @@ if [ -e "${__HOMEBREW_ROOT}/bin/brew" ]; then
   # __my_brew_tap "cask-versions"
   # __my_brew_tap "command-not-found"
   # __my_brew_tap "services"
+  HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+  if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+    source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
+  fi
 fi
 unset __HOMEBREW_ROOT
 unset __HOMEBREW_MIRROR
 unset __my_brew_tap
+

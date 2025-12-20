@@ -4,6 +4,7 @@
 [ -f ~/.profile.d/rust ] && . ~/.profile.d/rust
 [ -f ~/.profile.d/kitty ] && . ~/.profile.d/kitty
 [ -f ~/.profile.d/custom ] && . ~/.profile.d/custom
+[ -f ~/.profile.d/proxychains ] && . ~/.profile.d/proxychains
 
 if [ -x "$(command -v pyenv)" ]; then
     [ -f ~/.profile.d/pyenv ] && . ~/.profile.d/pyenv

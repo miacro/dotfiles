@@ -1,0 +1,9 @@
+
+if [ -x "$(command -v xrdb)" ]; then
+    if [ -f ~/.Xresources ]; then
+        xrdb -merge ~/.Xresources
+    fi
+    if [ -f ~/.Xresources.d/custom ]; then
+        xrdb -merge ~/.Xresources.d/custom
+    fi
+fi

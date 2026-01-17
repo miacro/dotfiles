@@ -13,3 +13,7 @@ fi
 if [ -n "${XDG_CURRENT_DESKTOP}" ]; then
     source ~/.profile.d/desktop/im
 fi
+
+if [ "$XDG_SESSION_TYPE" = wayland ]; then
+    source ~/.profile.d/desktop/xresources
+fi

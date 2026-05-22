@@ -31,6 +31,7 @@ if [ -e "${__HOMEBREW_ROOT}/bin/brew" ]; then
   if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
     source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
   fi
+  export HOMEBREW_AUTO_UPDATE_SECS=604800
 fi
 unset __HOMEBREW_ROOT
 unset __HOMEBREW_MIRROR

@@ -4,6 +4,8 @@ __HOMEBREW_ROOT="/opt/homebrew"
 __HOMEBREW_MIRROR_DOM=https://mirrors.tuna.tsinghua.edu.cn/homebrew
 __HOMEBREW_MIRROR_GIT=https://mirrors.tuna.tsinghua.edu.cn/git/homebrew
 __HOMEBREW_MIRROR_PIP=https://pypi.tuna.tsinghua.edu.cn/simple
+# __HOMEBREW_MIRROR_DOM=https://mirrors.ustc.edu.cn/homebrew
+# __HOMEBREW_MIRROR_GIT=https://mirrors.ustc.edu.cn
 
 
 __my_brew_tap() {
@@ -14,7 +16,9 @@ __my_brew_tap() {
 
 if [ -e "${__HOMEBREW_ROOT}/bin/brew" ]; then
   eval "$(${__HOMEBREW_ROOT}/bin/brew shellenv)"
-  export HOMEBREW_BREW_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/brew.git"
+  # export HOMEBREW_BREW_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/brew.git"
+  export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+
   export HOMEBREW_CORE_GIT_REMOTE="${__HOMEBREW_MIRROR_GIT}/homebrew-core.git"
   export HOMEBREW_API_DOMAIN="${__HOMEBREW_MIRROR_DOM}-bottles/api"
   export HOMEBREW_BOTTLE_DOMAIN="${__HOMEBREW_MIRROR_DOM}-bottles"

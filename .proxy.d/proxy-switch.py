@@ -13,7 +13,6 @@ PROXY_DIR = os.path.expanduser("~/.proxy.d")
 
 def list_proxy_files(proxy_dir):
     if not os.path.isdir(proxy_dir):
-        exit_all("[!] Directory {} not found.".format(proxy_dir), color_code="error")
         return {}
 
     files = []
@@ -109,21 +108,32 @@ def check_connectivity(target_url="https://www.google.com", timeout=30):
 
 
 def main():
+    pre_parser = argparse.ArgumentParser(add_help=False)
+    pre_parser.add_argument("-d", "--proxy-dir", default=PROXY_DIR)
+    args, _ = pre_parser.parse_known_args()
+    proxy_dir = args.proxy_dir
+    if not proxy_dir:
+        proxy_dir = PROXY_DIR
+
     parser = argparse.ArgumentParser(
         description="A robust terminal proxy switcher.",
         formatter_class=argparse.RawTextHelpFormatter,
     )
-
     # Global option to change the directory
     parser.add_argument(
         "-d",
         "--proxy-dir",
-        default=PROXY_DIR,
+        default=proxy_dir,
         help="Path to the proxy configurations directory (default: {})".format(
-            PROXY_DIR
+            proxy_dir
         ),
     )
-
+    proxy_dir = os.path.abspath(os.path.expanduser(proxy_dir))
+    proxy_files = list_proxy_files(proxy_dir)
+    proxy_name_lines = []
+    for name, file in proxy_files.items():
+        proxy_name_lines.append("             {}\n".format(name))
+    proxy_name_lines = "".join(proxy_name_lines)
     # Positional argument for the action or proxy name
     parser.add_argument(
         "action",
@@ -132,12 +142,18 @@ def main():
         "  on       - Automatically switch to the first sorted proxy\n"
         "  off      - Disable all terminal proxies\n"
         "  status   - Check current proxy status and test connectivity\n"
-        "  [name]   - Provide a specific proxy name to switch to it directly",
+        "  [name]   - Provide a specific proxy name to switch to it directly, choices in:\n{}".format(
+            proxy_name_lines
+        ),
     )
+    if not os.path.isdir(proxy_dir):
+        exit_all("[!] Directory {} not found.".format(proxy_dir), color_code="error")
+    elif not proxy_files:
+        exit_all(
+            "[!] No proxy files found in {}.".format(proxy_dir), color_code="error"
+        )
 
     args = parser.parse_args()
-    proxy_dir = os.path.abspath(os.path.expanduser(args.proxy_dir))
-    proxy_files = list_proxy_files(proxy_dir)
 
     if not args.action:
         echo_log(
@@ -183,7 +199,7 @@ def main():
                 msg = color_text("Successfully connected to Google", color_code="info")
             else:
                 msg = color_text("Failed ({})".format(details), color_code="error")
-            print("Connectivity: {}".format(msg))
+            echo_log("Connectivity: {}".format(msg))
         return
     elif target == "on":
         if not proxy_files:
@@ -215,11 +231,12 @@ def main():
     for name in proxy_nos[1:]:
         env_lines.append("export %s=${%s};" % (name, proxy_nos[0]))
     echo_env("".join(env_lines))
-
-    echo_log(
+    msg = color_text(
         "[✓] Proxy successfully switched to [{}]: {}".format(target, proxy_url),
         color_code="info",
     )
+    msg = "echo '{}'".format(msg)
+    echo_env(msg)
 
 
 if __name__ == "__main__":

@@ -4,16 +4,18 @@ import sys
 import subprocess
 import argparse
 import re
+import urllib.request
+from urllib.error import URLError, HTTPError
+from collections import OrderedDict
 
 PROXY_DIR = os.path.expanduser("~/.proxy.d")
 
 
-def get_proxy_files(proxy_dir):
+def list_proxy_files(proxy_dir):
     if not os.path.isdir(proxy_dir):
-        exit_all("echo '\033[31m[!] Directory {} not found.\033[0m'".format(proxy_dir))
-        return
+        exit_all("[!] Directory {} not found.".format(proxy_dir), color_code="error")
+        return {}
 
-    # Filter out hidden files and the script itself if it lives in the same directory
     files = []
     for fn in os.listdir(proxy_dir):
         if fn.startswith(".") or fn.endswith(".py") or fn.endswith(".sh"):
@@ -21,21 +23,18 @@ def get_proxy_files(proxy_dir):
         if not os.path.isfile(os.path.join(proxy_dir, fn)):
             continue
         files.append(fn)
-    # Sort files numerically by the prefix before the '-'
-    files.sort(
-        key=lambda x: (
-            int(x.split("-")[0]) if x.split("-")[0].isdigit() else float("inf")
-        )
-    )
-    return files
-
-
-def get_proxy_name(proxy_file):
-    proxy_name = os.path.basename(proxy_file)
-    idx = proxy_name.find("-")
-    if idx >= 0:
-        proxy_name = proxy_name[idx + 1 :]
-    return proxy_name
+    names = []
+    for fn in files:
+        num, name = parse_proxy_name(fn)
+        if name:
+            names.append(((num, name), fn))
+    names = sorted(names)
+    result = OrderedDict()
+    for (num, name), fn in names:
+        if name in result:
+            continue
+        result[name] = os.path.join(proxy_dir, fn)
+    return result
 
 
 def parse_proxy_name(proxy_file):
@@ -50,26 +49,63 @@ def parse_proxy_name(proxy_file):
     return proxy_num, proxy_name
 
 
-def print_available(files):
-    print(
-        "echo 'Available proxy configurations (Sorted numerically):'", file=sys.stderr
-    )
-    for f in files:
-        print(f"echo '  - {get_clean_name(f)}'", file=sys.stderr)
+def echo_proxy_files(proxy_files):
+    echo_log("Available proxy configurations:")
+    for name, file in proxy_files.items():
+        echo_log("    {} ( {} )".format(name, file))
+
+
+def color_text(text, color_code):
+    if color_code == "error":
+        color_code = 31
+    elif color_code == "info":
+        color_code = 32
+    elif color_code == "warning":
+        color_code = 34
+    return "\033[{}m{}\033[0m".format(color_code, text)
 
 
 def echo_env(msg):
     print(msg, file=sys.stdout)
 
 
-def echo_log(msg):
+def echo_log(msg, color_code=None):
+    if color_code is not None:
+        msg = color_text(msg, color_code)
     print(msg, file=sys.stderr)
 
 
-def exit_all(msg=None, code=1):
+def exit_all(msg=None, exit_code=1, color_code=None):
     if msg:
-        echo_log(msg)
-    sys.exit(code)
+        echo_log(msg, color_code=color_code)
+    sys.exit(exit_code)
+
+
+def check_connectivity(target_url="https://www.google.com", timeout=30):
+    """
+    Independent function to test network connectivity through the current proxy.
+    Returns a tuple: (bool_success, status_message_or_code)
+    """
+    echo_log("Testing network connectivity...")
+
+    # Configure urllib to automatically pick up the terminal's proxy environment variables
+    proxy_handler = urllib.request.ProxyHandler()
+    opener = urllib.request.build_opener(proxy_handler)
+
+    # Use a realistic User-Agent to prevent getting immediately dropped by anti-bot rules
+    req = urllib.request.Request(
+        target_url,
+        headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"},
+    )
+
+    try:
+        with opener.open(req, timeout=timeout) as response:
+            if response.status in [200, 301, 302]:
+                return True, response.status
+            else:
+                return False, "Unexpected Status Code ({})".format(response.status)
+    except (URLError, HTTPError) as e:
+        return False, "Connection Failed/Timeout"
 
 
 def main():
@@ -101,102 +137,89 @@ def main():
 
     args = parser.parse_args()
     proxy_dir = os.path.abspath(os.path.expanduser(args.proxy_dir))
+    proxy_files = list_proxy_files(proxy_dir)
 
-    # If no action is provided, print usage and available configurations
     if not args.action:
-        files = get_proxy_files(proxy_dir)
         echo_log(
-            "echo '\033[31m[!] Missing argument. Usage: setproxy {name|on|off|status}\033[0m'",
+            "[!] Missing action. Usage: proxy-switch.py {name|on|off|status}",
+            color_code="warning",
         )
-        print_available(files)
+        echo_proxy_files(proxy_files)
         return
 
     target = args.action
-    files = get_proxy_files(proxy_dir)
+    target = target.strip()
+    proxy_envs = [
+        "http_proxy",
+        "https_proxy",
+        "ftp_proxy",
+        "rsyn_proxy",
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "FTP_PROXY",
+        "RSYN_PROXY",
+    ]
+    proxy_nos = ["no_proxy", "NO_PROXY"]
 
-    # 1. Action: OFF
     if target == "off":
-        print(
-            "unset http_proxy https_proxy ftp_proxy rsyn_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY RSYN_PROXY;"
-        )
-        print("echo '\033[31m[✗] Terminal proxy disabled.\033[0m'")
+        unset_line = " ".join(proxy_envs + proxy_nos)
+        echo_env("unset {};".format(unset_line))
+        msg = color_text("[✗] Terminal proxy disabled.", color_code="info")
+        msg = "echo '{}'".format(msg)
+        echo_env(msg)
         return
-
-    # 2. Action: STATUS
-    if target == "status":
-        current_proxy = os.environ.get("http_proxy")
-        if not current_proxy:
-            print("echo 'Proxy Status: \033[31mDisabled\033[0m'")
+    elif target == "status":
+        proxy = os.environ.get("http_proxy")
+        if not proxy:
+            msg = color_text("Disabled", color_code="info")
+            echo_log("Proxy Status: {}".format(msg))
         else:
-            print(f"echo 'Proxy Status: \033[32mEnabled\033[0m -> {current_proxy}'")
-            print("echo 'Testing network connectivity...'")
-            try:
-                subprocess.run(
-                    ["curl", "-I", "--connect-timeout", "3", "https://www.google.com"],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    check=True,
-                )
-                print(
-                    "echo 'Connectivity: \033[32mSuccessfully connected to Google\033[0m'"
-                )
-            except subprocess.CalledProcessError:
-                print("echo 'Connectivity: \033[31mFailed to connect to Google\033[0m'")
+            msg = color_text("Enabled", color_code="info")
+            echo_log("Proxy Status: {} -> {}".format(msg, proxy))
+
+            # Calling our isolated connectivity function
+            success, details = check_connectivity()
+            if success:
+                msg = color_text("Successfully connected to Google", color_code="info")
+            else:
+                msg = color_text("Failed ({})".format(details), color_code="error")
+            print("Connectivity: {}".format(msg))
+        return
+    elif target == "on":
+        if not proxy_files:
+            exit_all("[!] No proxy configuration files found.", color_code="error")
+            return
+        target = list(proxy_files.keys())[0]
+        msg = "[*] Automatically selecting the first proxy: {}".format(target)
+        echo_log(msg, color_code="warning")
+    elif target not in proxy_files:
+        echo_log("[!] Proxy not found: {}".format(target), color_code="error")
+        echo_proxy_files(proxy_files)
+        exit_all()
         return
 
-    # 3. Action: ON (Auto-select first)
-    if target == "on":
-        if not files:
-            print(
-                "echo '\033[31m[!] No proxy configuration files found.\033[0m'",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        target = get_clean_name(files[0])
-        print(
-            "echo '\033[34m[*] Automatically selecting the first proxy in order...\033[0m'"
+    proxy_file = proxy_files[target]
+    with open(proxy_file, "rt") as file:
+        proxy_url = file.read().strip()
+    if not proxy_url:
+        exit_all(
+            "[!] Error: proxy file for `{}` is empty!".format(target),
+            color_code="error",
         )
+        return
+    env_lines = ["export {}='{}';".format(proxy_envs[0], proxy_url)]
+    for name in proxy_envs[1:]:
+        env_lines.append("export %s=${%s};" % (name, proxy_envs[0]))
+    proxy_no_url = "localhost,127.0.0.1,::1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.127.0/24,*.local,*.internal"
+    env_lines.append("export {}='{}';".format(proxy_nos[0], proxy_no_url))
+    for name in proxy_nos[1:]:
+        env_lines.append("export %s=${%s};" % (name, proxy_nos[0]))
+    echo_env("".join(env_lines))
 
-    # 4. Action: Switch to a custom named proxy
-    matched_file = None
-    for f in files:
-        if get_clean_name(f) == target:
-            matched_file = f
-            break
-
-    if matched_file:
-        config_path = os.path.join(proxy_dir, matched_file)
-        with open(config_path, "r") as file:
-            proxy_url = file.read().strip()
-
-        if not proxy_url:
-            print(
-                f"echo '\033[31m[!] Error: Configuration file for `{target}` is empty!\033[0m'",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-
-        # Output shell commands for execution
-        print(
-            f"export http_proxy='{proxy_url}' https_proxy='{proxy_url}' ftp_proxy='{proxy_url}' rsyn_proxy='{proxy_url}';"
-        )
-        print(f"export HTTP_PROXY='{proxy_url}' HTTPS_PROXY='{proxy_url}';")
-        print(
-            "export no_proxy='localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12';"
-        )
-        print(
-            "export NO_PROXY='localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12';"
-        )
-        print(
-            f"echo '\033[32m[✓] Proxy successfully switched to [{target}]: {proxy_url}\033[0m'"
-        )
-    else:
-        print(
-            f"echo '\033[31m[!] Proxy configuration not found: {target}\033[0m'",
-            file=sys.stderr,
-        )
-        print_available(files)
-        sys.exit(1)
+    echo_log(
+        "[✓] Proxy successfully switched to [{}]: {}".format(target, proxy_url),
+        color_code="info",
+    )
 
 
 if __name__ == "__main__":

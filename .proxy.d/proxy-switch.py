@@ -7,6 +7,7 @@ import re
 import urllib.request
 from urllib.error import URLError, HTTPError
 from collections import OrderedDict
+from functools import partial
 
 PROXY_DIR = os.path.expanduser("~/.proxy.d")
 
@@ -146,6 +147,7 @@ def main():
             proxy_name_lines
         ),
     )
+    parser.print_help = partial(parser.print_help, file=sys.stderr)
     if not os.path.isdir(proxy_dir):
         exit_all("[!] Directory {} not found.".format(proxy_dir), color_code="error")
     elif not proxy_files:

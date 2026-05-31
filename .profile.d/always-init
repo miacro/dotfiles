@@ -1,0 +1,10 @@
+
+env_names=(proxyswitch)
+
+for fn in "${env_names[@]}";
+do
+    fn=~/.profile.d/${fn}
+    if [ -f "${fn}" ]; then
+        . "${fn}"
+    fi
+done

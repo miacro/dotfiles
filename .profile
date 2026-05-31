@@ -48,5 +48,9 @@ export EDITOR="vim"
 alias grep='grep --color=auto --exclude-dir=node_modules --exclude-dir=.cvs --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn'
 
 if [ -f /etc/profile.d/autojump.sh ]; then
-  source /etc/profile.d/autojump.sh
+  . /etc/profile.d/autojump.sh
+fi
+
+if [ -f ~/.profile.d/always-init ]; then
+  . ~/.profile.d/always-init
 fi

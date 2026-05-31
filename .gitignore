@@ -63,3 +63,15 @@ Session.vim
 tags
 
 /*
+!/.proxy.d
+!/.profile.d
+!/.config/zsh
+!/.config/kitty
+!/.config/alacritty
+!/.config/awesome
+!/.config/fish
+!/.config/fontconfig
+!/.config/nix
+!/.config/tmux
+!/.Xresources.d
+!/.xprofile.d

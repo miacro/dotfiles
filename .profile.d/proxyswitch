@@ -1,0 +1,8 @@
+function proxyswitch() {
+    local proxy_switcher=~/.proxy.d/proxy-switch.py
+    if [ -f "${proxy_switcher}" ]; then
+        eval "$(python3 ${proxy_switcher} "$@")"
+    else
+        echo "${proxy_switcher} not found"
+    fi
+}

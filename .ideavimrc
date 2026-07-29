@@ -1,0 +1,140 @@
+" ============================================================
+" Leader
+" ============================================================
+
+let mapleader = " "
+
+set timeout
+set timeoutlen=700
+
+
+" ============================================================
+" 基础选项
+" ============================================================
+
+set number
+set relativenumber
+
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+set scrolloff=5
+set clipboard+=unnamedplus
+
+
+" ============================================================
+" 文件与搜索
+" ============================================================
+
+" 查找文件
+nmap <leader>ff <Action>(GotoFile)
+
+" 全局搜索文本
+nmap <leader>fg <Action>(FindInPath)
+
+" 最近打开的文件
+nmap <leader>fr <Action>(RecentFiles)
+
+" 查找类
+nmap <leader>fc <Action>(GotoClass)
+
+" 查找符号
+nmap <leader>fs <Action>(GotoSymbol)
+
+
+" ============================================================
+" 代码导航
+" ============================================================
+
+" 跳转到声明
+nmap <leader>gd <Action>(GotoDeclaration)
+
+" 跳转到实现
+nmap <leader>gi <Action>(GotoImplementation)
+
+" 查找引用
+nmap <leader>gr <Action>(FindUsages)
+
+" 查看类型声明
+nmap <leader>gt <Action>(GotoTypeDeclaration)
+
+
+" ============================================================
+" 重构与代码操作
+" ============================================================
+
+" 重命名
+nmap <leader>rn <Action>(RenameElement)
+
+" 快速修复 / 意图操作
+nmap <leader>ca <Action>(ShowIntentionActions)
+
+" 格式化代码
+nmap <leader>cf <Action>(ReformatCode)
+
+" 优化 import
+nmap <leader>co <Action>(OptimizeImports)
+
+" 查看文档
+nmap <leader>cd <Action>(QuickJavaDoc)
+
+
+" ============================================================
+" 编辑器标签
+" ============================================================
+
+" 关闭当前标签
+nmap <leader>bd <Action>(CloseContent)
+
+" 重新打开已关闭的标签
+nmap <leader>bu <Action>(ReopenClosedTab)
+
+" 下一个标签
+nmap <leader>bn <Action>(NextTab)
+
+" 上一个标签
+nmap <leader>bp <Action>(PreviousTab)
+
+
+" ============================================================
+" 窗口
+" ============================================================
+
+" 水平分割
+nmap <leader>ws <Action>(SplitHorizontally)
+
+" 垂直分割
+nmap <leader>wv <Action>(SplitVertically)
+
+" 取消分割
+nmap <leader>wc <Action>(Unsplit)
+
+
+" ============================================================
+" 运行与调试
+" ============================================================
+
+" 运行当前配置
+nmap <leader>rr <Action>(Run)
+
+" 调试当前配置
+nmap <leader>rd <Action>(Debug)
+
+" 停止
+nmap <leader>rs <Action>(Stop)
+
+
+" ============================================================
+" 工具窗口
+" ============================================================
+
+" Project
+nmap <leader>tp <Action>(ActivateProjectToolWindow)
+
+" Terminal
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
+
+" 隐藏所有工具窗口
+nmap <leader>th <Action>(HideAllWindows)

@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# Purpose:
+# Codex keeps persistent data such as auth.json, configuration, and sessions
+# under ~/.codex. However, virtiofs may have problems with IPC files, locks,
+# and temporary files.
+#
+# Therefore:
+#   - ~/.codex remains a persistent normal directory;
+#   - ipc, tmp, and thread-writer-locks are placed under /var/tmp;
+#   - these runtime directories are recreated whenever the container starts,
+#     because /var/tmp may be cleared when the container is rebuilt.
+#
+# This script is intended to run from the shell profile before Codex starts.
+
+
+CODEX_HOME="${HOME}/.codex"
+RUNTIME_ROOT="/var/tmp/codex-runtime-${USER:-codex}"
+
+ensure_runtime_link() {
+    name="$1"
+    link_path="${CODEX_HOME}/${name}"
+    target_path="${RUNTIME_ROOT}/${name}"
+
+    if [ -L "$link_path" ]; then
+        current_target="$(readlink "$link_path")"
+
+        if [ "$current_target" != "$target_path" ]; then
+            echo "Removing incorrect symlink: $link_path -> $current_target"
+            unlink "$link_path"
+        fi
+    elif [ -e "$link_path" ]; then
+        echo "Removing existing non-symlink path: $link_path"
+        rm -rf -- "$link_path"
+    fi
+
+    if [ ! -d "$target_path" ]; then
+        echo "Creating runtime directory: $target_path"
+        mkdir -p "$target_path"
+    fi
+
+    if [ ! -e "$link_path" ] && [ ! -L "$link_path" ]; then
+        echo "Creating symlink: $link_path -> $target_path"
+        ln -s "$target_path" "$link_path"
+    fi
+}
+
+ensure_runtime_link ipc
+ensure_runtime_link tmp
+ensure_runtime_link thread-writer-locks
+

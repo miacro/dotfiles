@@ -217,11 +217,15 @@ def main():
         return
 
     proxy_file = proxy_files[target]
+    proxy_url = ""
     with open(proxy_file, "rt") as file:
-        proxy_url = file.read().strip()
+        for line in file:
+            proxy_url = line.partition("#")[0].strip()
+            if proxy_url:
+                break
     if not proxy_url:
         exit_all(
-            "[!] Error: proxy file for `{}` is empty!".format(target),
+            "[!] Error: proxy file for `{}` contains no proxy URL!".format(target),
             color_code="error",
         )
         return

@@ -1,19 +1,21 @@
-# export LANG=zh_CN.UTF-8
-# LANG="en_US.UTF-8"
-#
-export XMODIFIERS="@im=fcitx"
+if [ -n "${XDG_CURRENT_DESKTOP}" ]; then
+    # export LANG=zh_CN.UTF-8
+    # LANG="en_US.UTF-8"
+    #
+    export XMODIFIERS="@im=fcitx"
 
-if [ "${XDG_SESSION_TYPE}" != "wayland" ]; then
-  export GTK_IM_MODULE=fcitx
-  export SDL_IM_MODULE=fcitx
-  export QT_IM_MODULE=fcitx
+    if [ "${XDG_SESSION_TYPE}" != "wayland" ]; then
+      export GTK_IM_MODULE=fcitx
+      export SDL_IM_MODULE=fcitx
+      export QT_IM_MODULE=fcitx
+    fi
+    # export GTK_IM_MODULE=ibus
+    # export XMODIFIERS=@im=ibus
+    # export QT_IM_MODULE=ibus
+
+    # if [ -x "$(command -v fcitx5)" ]; then
+    #   fcitx5 -d
+    # elif [ -x "$(command -v fcitx)" ]; then
+    #   fcitx -d
+    # fi
 fi
-# export GTK_IM_MODULE=ibus
-# export XMODIFIERS=@im=ibus
-# export QT_IM_MODULE=ibus
-
-# if [ -x "$(command -v fcitx5)" ]; then
-#   fcitx5 -d
-# elif [ -x "$(command -v fcitx)" ]; then
-#   fcitx -d
-# fi

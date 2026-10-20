@@ -5,9 +5,12 @@ env_names=(
     rust
     kitty
     custom
-    proxychains
+    pyenv
+    proxy/proxychains
     nix
-    v2raya
+    proxy/v2raya
+    desktop/im
+    desktop/xresources
 )
 
 for fn in "${env_names[@]}";
@@ -17,15 +20,3 @@ do
         . "${fn}"
     fi
 done
-
-if [ -x "$(command -v pyenv)" ]; then
-    [ -f ~/.profile.d/pyenv ] && . ~/.profile.d/pyenv
-fi
-
-if [ -n "${XDG_CURRENT_DESKTOP}" ]; then
-    source ~/.profile.d/desktop/im
-fi
-
-if [ "$XDG_SESSION_TYPE" = wayland ]; then
-    source ~/.profile.d/desktop/xresources
-fi

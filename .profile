@@ -30,7 +30,7 @@ if [ ! -n "${MYSELF_INIT_PROFILE}" ]; then
   __my_update_environments /usr/local
   __my_update_environments ~/.local
 
-  [ -f ~/.profile.d/all-init ] && . ~/.profile.d/all-init
+  [ -f ~/.profile.d/0-init-once ] && . ~/.profile.d/0-init-once
 
   export PATH=${PATH}:/sbin:/usr/sbin:/usr/local/sbin
   export PATH=~/node_modules/.bin:${PATH}
@@ -51,6 +51,6 @@ if [ -f /etc/profile.d/autojump.sh ]; then
   . /etc/profile.d/autojump.sh
 fi
 
-if [ -f ~/.profile.d/always-init ]; then
-  . ~/.profile.d/always-init
+if [ -f ~/.profile.d/1-init-always ]; then
+  . ~/.profile.d/1-init-always
 fi

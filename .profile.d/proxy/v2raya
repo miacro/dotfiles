@@ -1,0 +1,10 @@
+if [ -x "$(command -v brew)" ]; then
+    V2RAY_RULES_DIR=$(brew --prefix)/opt/v2ray-rules-dat/share/v2ray-rules-dat
+    export V2RAYA_V2RAY_ASSETSDIR=${V2RAY_RULES_DIR}
+    export XRAY_LOCATION_ASSET=${V2RAY_RULES_DIR}
+
+fi
+
+if [ -x "$(command -v xray)" ]; then
+    V2RAYA_V2RAY_BIN="$(command -v xray)"
+fi

@@ -1,5 +1,7 @@
 
-env_names=(proxyswitch)
+env_names=(
+    proxyswitch
+)
 
 for fn in "${env_names[@]}";
 do

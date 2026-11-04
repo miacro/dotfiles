@@ -9,15 +9,13 @@ import urllib.request
 from http.client import HTTPException, InvalidURL
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
-from collections import OrderedDict
-from functools import partial
 
 PROXY_DIR = os.path.expanduser("~/.proxy.d")
 
 
 def list_proxy_files(proxy_dir):
     if not os.path.isdir(proxy_dir):
-        return {}
+        return []
 
     files = []
     for fn in os.listdir(proxy_dir):
@@ -32,12 +30,7 @@ def list_proxy_files(proxy_dir):
         if name:
             names.append(((num, name), fn))
     names = sorted(names)
-    result = OrderedDict()
-    for (num, name), fn in names:
-        if name in result:
-            continue
-        result[name] = os.path.join(proxy_dir, fn)
-    return result
+    return [(name, os.path.join(proxy_dir, fn)) for (num, name), fn in names]
 
 
 def parse_proxy_name(proxy_file):
@@ -52,13 +45,33 @@ def parse_proxy_name(proxy_file):
     return proxy_num, proxy_name
 
 
+def format_proxy_files(proxy_files):
+    lines = []
+    seen = set()
+    home = os.path.expanduser("~")
+    home_prefix = os.path.join(home, "")
+    for index, (name, file) in enumerate(proxy_files, start=1):
+        shadowed = name in seen
+        seen.add(name)
+        suffix = " [shadowed]" if shadowed else ""
+        try:
+            proxy = redact_proxy_url(read_proxy_url(file))
+        except ValueError as error:
+            proxy = "<{}>".format(error)
+        display_file = file
+        if file == home:
+            display_file = "~"
+        elif file.startswith(home_prefix):
+            display_file = "~/" + file[len(home_prefix):]
+        line = "    {}. {} ( {} ) -> {}{}".format(index, name, display_file, proxy, suffix)
+        lines.append(color_text(line, "gray" if shadowed else "info"))
+    return lines
+
+
 def echo_proxy_files(proxy_files):
-    echo_log("Available proxy configurations:")
-    for index, (name, file) in enumerate(
-        sorted(proxy_files.items(), key=lambda item: parse_proxy_name(item[1])),
-        start=1,
-    ):
-        echo_log("    {}. {} ( {} )".format(index, name, file))
+    echo_log("Available proxy configurations (gray entries are selectable by index):")
+    for line in format_proxy_files(proxy_files):
+        echo_log(line)
 
 
 def color_text(text, color_code):
@@ -68,6 +81,8 @@ def color_text(text, color_code):
         color_code = 32
     elif color_code == "warning":
         color_code = 34
+    elif color_code == "gray":
+        color_code = 90
     return "\033[{}m{}\033[0m".format(color_code, text)
 
 
@@ -85,6 +100,27 @@ def exit_all(msg=None, exit_code=1, color_code=None):
     if msg:
         echo_log(msg, color_code=color_code)
     sys.exit(exit_code)
+
+
+def read_proxy_url(proxy_file):
+    proxy_url = ""
+    try:
+        with open(proxy_file, "rt", encoding="utf-8") as file:
+            for line in file:
+                proxy_url = line.partition("#")[0].strip()
+                if proxy_url:
+                    break
+    except OSError as error:
+        raise ValueError("Unable to read proxy file {}: {}".format(proxy_file, error)) from None
+    except UnicodeError:
+        raise ValueError("Proxy file {} is not valid UTF-8 text.".format(proxy_file)) from None
+    if not proxy_url:
+        raise ValueError("Proxy file {} contains no proxy URL!".format(proxy_file))
+    try:
+        parse_proxy_url(proxy_url)
+    except ValueError as error:
+        raise ValueError("Invalid proxy URL in {}: {}".format(proxy_file, error)) from None
+    return proxy_url
 
 
 def parse_proxy_url(proxy_url):
@@ -218,18 +254,14 @@ def main():
     try:
         proxy_files = list_proxy_files(proxy_dir)
     except OSError as error:
-        proxy_files = {}
+        proxy_files = []
         proxy_files_error = error
-    proxy_name_lines = []
-    for index, name in enumerate(proxy_files, start=1):
-        proxy_name_lines.append("             {}. {}\n".format(index, name))
-    proxy_name_lines = "".join(proxy_name_lines)
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument(
         "--name",
         dest="proxy_name",
         metavar="NAME",
-        help="Select an exact proxy name, including numeric names or reserved commands",
+        help="Select the highest-priority configuration for an exact name, including numeric names or reserved commands",
     )
     # Positional argument for the action, index, or proxy name
     selection.add_argument(
@@ -239,12 +271,22 @@ def main():
         "  on       - Automatically switch to the first sorted proxy\n"
         "  off      - Disable all terminal proxies\n"
         "  status   - Check current proxy status and test connectivity\n"
-        "  [index]  - Select a proxy by its 1-based index in the current list\n"
-        "  [name]   - Provide a specific proxy name to switch to it directly, choices in:\n{}".format(
-            proxy_name_lines.replace("%", "%%")
-        ),
+        "  [index]  - Select any proxy by its 1-based index, including gray entries\n"
+        "  [name]   - Select the highest-priority configuration for this name\n"
+        "Green entries are selected by name; gray entries are shadowed.",
     )
-    parser.print_help = partial(parser.print_help, file=sys.stderr)
+    original_print_help = parser.print_help
+
+    def print_proxy_help(file=None):
+        if file is None:
+            file = sys.stderr
+        original_print_help(file=file)
+        if proxy_files:
+            print("\nAvailable proxy configurations:", file=file)
+            for line in format_proxy_files(proxy_files):
+                print(line, file=file)
+
+    parser.print_help = print_proxy_help
     args = parser.parse_args()
 
     target = (args.action or "").strip()
@@ -288,6 +330,7 @@ def main():
     ]
     proxy_nos = ["no_proxy", "NO_PROXY"]
 
+    proxy_file = None
     if args.proxy_name is not None:
         target = args.proxy_name
     elif target == "off":
@@ -330,7 +373,7 @@ def main():
         return
 
     elif target == "on":
-        target = list(proxy_files.keys())[0]
+        target, proxy_file = proxy_files[0]
         msg = "[*] Automatically selecting the first proxy: {}".format(target)
         echo_log(msg, color_code="warning")
     elif target.isdecimal():
@@ -345,44 +388,19 @@ def main():
             )
             echo_proxy_files(proxy_files)
             exit_all()
-        target = list(proxy_files.keys())[index - 1]
-    if target not in proxy_files:
+        target, proxy_file = proxy_files[index - 1]
+    if proxy_file is None:
+        proxy_file = next((file for name, file in proxy_files if name == target), None)
+    if proxy_file is None:
         echo_log("[!] Proxy not found: {}".format(target), color_code="error")
         echo_proxy_files(proxy_files)
         exit_all()
         return
 
-    proxy_file = proxy_files[target]
-    proxy_url = ""
     try:
-        with open(proxy_file, "rt", encoding="utf-8") as file:
-            for line in file:
-                proxy_url = line.partition("#")[0].strip()
-                if proxy_url:
-                    break
-    except OSError as error:
-        exit_all(
-            "[!] Unable to read proxy file {}: {}".format(proxy_file, error),
-            color_code="error",
-        )
-    except UnicodeError:
-        exit_all(
-            "[!] Proxy file {} is not valid UTF-8 text.".format(proxy_file),
-            color_code="error",
-        )
-    if not proxy_url:
-        exit_all(
-            "[!] Proxy file {} contains no proxy URL!".format(proxy_file),
-            color_code="error",
-        )
-        return
-    try:
-        parse_proxy_url(proxy_url)
+        proxy_url = read_proxy_url(proxy_file)
     except ValueError as error:
-        exit_all(
-            "[!] Invalid proxy URL in {}: {}".format(proxy_file, error),
-            color_code="error",
-        )
+        exit_all("[!] {}".format(error), color_code="error")
     env_lines = ["export {}={};".format(proxy_envs[0], shlex.quote(proxy_url))]
     for name in proxy_envs[1:]:
         env_lines.append('export %s="${%s}";' % (name, proxy_envs[0]))
